@@ -1,20 +1,8 @@
 name: lullabee
-description: A new Flutter project.
+description: 子供との大切な会話を記録して家族で共有するアプリ
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
 
 environment:
@@ -27,15 +15,16 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
+  # FlutterFlow generated dependencies - will be removed
   adapty_xtuel0:
-    path: ./dependencies/adapty_xtuel0 # 1.1.1
+    path: ./dependencies/adapty_xtuel0
   assets_audio_player: 
     git:
       url: https://github.com/florent37/Flutter-AssetsAudioPlayer
       ref: 28a7f52db65fd8b8ac0bdc39013d3de978c8a375
   assets_audio_player_web: 3.1.1
   audio_recorder_and_player_library_qzxcam:
-    path: ./dependencies/audio_recorder_and_player_library_qzxcam # 1.0.0
+    path: ./dependencies/audio_recorder_and_player_library_qzxcam
   audio_session: 0.1.23
   auto_size_text: 3.0.0
   cached_network_image: 3.4.1
@@ -51,9 +40,9 @@ dependencies:
   device_info_plus_platform_interface: 7.0.1
   dropdown_button2: 2.3.9
   ff_commons:
-    path: ./dependencies/ff_commons # 1.0.0+1
+    path: ./dependencies/ff_commons
   ff_theme:
-    path: ./dependencies/ff_theme # 1.0.0+1
+    path: ./dependencies/ff_theme
   file_picker: 8.1.2
   firebase_auth: 5.3.3
   firebase_auth_platform_interface: 7.4.9
@@ -95,7 +84,7 @@ dependencies:
   just_audio_web: 0.4.13
   mime_type: 1.0.0
   music_player_library_jwsrtr:
-    path: ./dependencies/music_player_library_jwsrtr # 1.0.0
+    path: ./dependencies/music_player_library_jwsrtr
   page_transition: 2.1.0
   path_provider: 2.1.4
   path_provider_android: 2.2.10
@@ -121,7 +110,7 @@ dependencies:
   record_windows: 1.0.3
   rxdart: 0.27.7
   shadcn_u_i_kit_v48jv9:
-    path: ./dependencies/shadcn_u_i_kit_v48jv9 # 0.1.19
+    path: ./dependencies/shadcn_u_i_kit_v48jv9
   shared_preferences: 2.3.2
   shared_preferences_android: 2.3.2
   shared_preferences_foundation: 2.5.2
@@ -146,15 +135,13 @@ dependencies:
   url_launcher_web: 2.3.3
   url_launcher_windows: 3.1.2
   utility_functions_library_8g4bud:
-    path: ./dependencies/utility_functions_library_8g4bud # 0.0.5
+    path: ./dependencies/utility_functions_library_8g4bud
   video_player: 2.9.2
   video_player_android: 2.7.13
   video_player_avfoundation: 2.6.2
   video_player_platform_interface: 6.2.3
   video_player_web: 2.3.2
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
 
 dependency_overrides:

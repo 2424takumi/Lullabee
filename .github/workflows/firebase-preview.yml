@@ -1,0 +1,83 @@
+name: Firebase Preview Deploy
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  preview:
+    name: Deploy Preview to Firebase
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.0'
+        channel: 'stable'
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Enable Flutter Web
+      run: flutter config --enable-web
+      
+    - name: Build Web
+      run: flutter build web --release --web-renderer html
+      
+    - name: Create channel name
+      id: channel
+      run: echo "name=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+      
+    - name: Deploy to Firebase Preview Channel
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+        projectId: lullabee-mdb94s
+        channelId: ${{ steps.channel.outputs.name }}
+        expires: 7d
+      env:
+        FIREBASE_CLI_EXPERIMENTS: webframeworks
+        
+    - name: Comment PR with preview URL
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const botComment = comments.find(comment => 
+            comment.user.type === 'Bot' && 
+            comment.body.includes('Firebase Preview')
+          );
+          
+          const body = `🔥 **Firebase Preview**
+          
+          プレビュー環境がデプロイされました！
+          
+          🌐 **Preview URL**: ${{ steps.firebase-preview.outputs.url }}
+          
+          このプレビューは7日後に自動的に削除されます。`;
+          
+          if (botComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: botComment.id,
+              body,
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+          }

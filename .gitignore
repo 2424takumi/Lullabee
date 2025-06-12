@@ -61,3 +61,7 @@ coverage/
 .flutterflow/
 ff_commons/
 ff_theme/
+
+# Firebase
+.firebase/
+*.cache

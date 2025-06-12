@@ -1,7 +1,7 @@
 {
-  "buildCommand": "flutter build web --release",
+  "buildCommand": "bash build.sh",
   "outputDirectory": "build/web",
-  "installCommand": "curl -fsSL https://flutter.dev/setup.sh | bash && export PATH=\"$PATH:$HOME/flutter/bin\" && flutter --version && flutter pub get",
+  "installCommand": "npm install",
   "framework": null,
   "rewrites": [
     {

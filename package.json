@@ -1,0 +1,11 @@
+{
+  "name": "lullabee",
+  "version": "1.0.0",
+  "description": "子供との大切な会話を記録して家族で共有するアプリ",
+  "scripts": {
+    "build": "bash build.sh"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

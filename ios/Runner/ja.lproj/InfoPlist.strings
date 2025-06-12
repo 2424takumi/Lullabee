@@ -1,0 +1,4 @@
+NSMicrophoneUsageDescription = "マイクを許可しますか？";
+NSCalendarsUsageDescription = "カレンダーを許可しますか？";
+PermissionGroupNotification = "通知を許可しますか？";
+NSPhotoLibraryUsageDescription = "写真ライブラリーを許可しますか？";

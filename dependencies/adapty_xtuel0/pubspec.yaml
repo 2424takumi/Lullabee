@@ -87,7 +87,7 @@ dependencies:
 
 dependency_overrides:
   web: 0.5.1
-  http: 1.2.0
+  http: 1.1.0
   uuid: ^4.0.0
 
 dev_dependencies:

@@ -1,0 +1,48 @@
+name: Simple Firebase Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'
+        
+    - name: Get dependencies
+      run: |
+        cd ${{ github.workspace }}
+        rm -f pubspec.lock
+        flutter pub get
+        
+    - name: Build web
+      run: flutter build web --release
+      
+    - name: Install Firebase CLI
+      run: |
+        curl -sL https://firebase.tools | bash
+        
+    - name: Deploy to Firebase
+      env:
+        FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      run: |
+        # Create service account file from secret
+        echo "$FIREBASE_SERVICE_ACCOUNT" > $HOME/service-account.json
+        
+        # Export Google Application Credentials
+        export GOOGLE_APPLICATION_CREDENTIALS=$HOME/service-account.json
+        
+        # Deploy using firebase CLI
+        firebase deploy --only hosting --project lullabee-mdb94s --non-interactive
+        
+        # Clean up
+        rm $HOME/service-account.json

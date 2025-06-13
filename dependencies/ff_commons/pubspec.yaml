@@ -21,8 +21,8 @@ dependencies:
   mime_type: 1.0.0
 
 dependency_overrides:
-  http: 1.2.0
   web: 0.5.1
+  http: 1.2.0
   collection: 1.19.1
 
 flutter:

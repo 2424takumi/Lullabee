@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -21,7 +22,9 @@ jobs:
         channel: 'stable'
         
     - name: Install dependencies
-      run: flutter pub get
+      run: |
+        rm -f pubspec.lock
+        flutter pub get
       
     - name: Enable Flutter Web
       run: flutter config --enable-web
@@ -29,6 +32,15 @@ jobs:
     - name: Build Web
       run: flutter build web --release --web-renderer html
       
+    - name: Check if Firebase Service Account exists
+      run: |
+        if [ -z "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
+          echo "Error: FIREBASE_SERVICE_ACCOUNT secret is not set"
+          exit 1
+        else
+          echo "FIREBASE_SERVICE_ACCOUNT secret is set"
+        fi
+        
     - name: Deploy to Firebase Hosting
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:

@@ -20,7 +20,9 @@ jobs:
         channel: 'stable'
         
     - name: Install dependencies
-      run: flutter pub get
+      run: |
+        rm -f pubspec.lock
+        flutter pub get
       
     - name: Enable Flutter Web
       run: flutter config --enable-web

@@ -1,0 +1,54 @@
+name: Firebase Deploy Debug
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug:
+    name: Debug Firebase Configuration
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Check Firebase Secrets
+      run: |
+        echo "Checking for Firebase secrets..."
+        
+        if [ -n "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
+          echo "✅ FIREBASE_SERVICE_ACCOUNT is set"
+        else
+          echo "❌ FIREBASE_SERVICE_ACCOUNT is NOT set"
+        fi
+        
+        if [ -n "${{ secrets.FIREBASE_SERVICE_ACCOUNT_LULLABEE_MDB94S }}" ]; then
+          echo "✅ FIREBASE_SERVICE_ACCOUNT_LULLABEE_MDB94S is set"
+        else
+          echo "❌ FIREBASE_SERVICE_ACCOUNT_LULLABEE_MDB94S is NOT set"
+        fi
+        
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.0'
+        channel: 'stable'
+        
+    - name: Flutter Version
+      run: flutter --version
+      
+    - name: Test Dependencies Installation
+      run: |
+        echo "Testing dependency installation..."
+        rm -f pubspec.lock
+        flutter pub get --verbose
+        
+    - name: List Firebase Config Files
+      run: |
+        echo "Firebase configuration files:"
+        ls -la firebase* || echo "No firebase files in root"
+        ls -la .firebaserc || echo "No .firebaserc file"
+        if [ -d "firebase" ]; then
+          echo "Firebase directory contents:"
+          ls -la firebase/
+        fi

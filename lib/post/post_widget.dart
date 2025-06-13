@@ -381,53 +381,10 @@ class _PostWidgetState extends State<PostWidget> {
                 ),
                 FFButtonWidget(
                   onPressed: () async {
-                    final selectedFiles = await selectFiles(
-                      allowedExtensions: ['mp3'],
-                      multiFile: false,
-                    );
-                    if (selectedFiles != null) {
-                      safeSetState(
-                          () => _model.isDataUploading_uploadData9x3 = true);
-                      var selectedUploadedFiles = <FFUploadedFile>[];
-
-                      var downloadUrls = <String>[];
-                      try {
-                        selectedUploadedFiles = selectedFiles
-                            .map((m) => FFUploadedFile(
-                                  name: m.storagePath.split('/').last,
-                                  bytes: m.bytes,
-                                ))
-                            .toList();
-
-                        downloadUrls = (await Future.wait(
-                          selectedFiles.map(
-                            (f) async =>
-                                await uploadData(f.storagePath, f.bytes),
-                          ),
-                        ))
-                            .where((u) => u != null)
-                            .map((u) => u!)
-                            .toList();
-                      } finally {
-                        _model.isDataUploading_uploadData9x3 = false;
-                      }
-                      if (selectedUploadedFiles.length ==
-                              selectedFiles.length &&
-                          downloadUrls.length == selectedFiles.length) {
-                        safeSetState(() {
-                          _model.uploadedLocalFile_uploadData9x3 =
-                              selectedUploadedFiles.first;
-                          _model.uploadedFileUrl_uploadData9x3 =
-                              downloadUrls.first;
-                        });
-                      } else {
-                        safeSetState(() {});
-                        return;
-                      }
-                    }
+                    context.pushNamed(RecordingWidget.routeName);
                   },
                   text: FFLocalizations.of(context).getText(
-                    'n5zr1v76' /* 音声をアップロード */,
+                    'record_audio' /* 音声を録音 */,
                   ),
                   options: FFButtonOptions(
                     height: 40.0,
@@ -456,6 +413,129 @@ class _PostWidgetState extends State<PostWidget> {
                     elevation: 0.0,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FFButtonWidget(
+                      onPressed: () async {
+                        context.pushNamed(RecordingWidget.routeName);
+                      },
+                      text: FFLocalizations.of(context).getText(
+                        'rec_new' /* 録音する */,
+                      ),
+                      icon: Icon(
+                        Icons.mic_rounded,
+                        size: 20.0,
+                      ),
+                      options: FFButtonOptions(
+                        height: 40.0,
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                        iconPadding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 8.0, 0.0),
+                        color: Color(0xFFFF6B9D),
+                        textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              font: GoogleFonts.notoSansJp(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .fontStyle,
+                              ),
+                              color: Colors.white,
+                              letterSpacing: 0.0,
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .fontWeight,
+                              fontStyle:
+                                  FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                            ),
+                        elevation: 0.0,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    FFButtonWidget(
+                      onPressed: () async {
+                        final selectedFiles = await selectFiles(
+                          allowedExtensions: ['mp3'],
+                          multiFile: false,
+                        );
+                        if (selectedFiles != null) {
+                          safeSetState(
+                              () => _model.isDataUploading_uploadData9x3 = true);
+                          var selectedUploadedFiles = <FFUploadedFile>[];
+
+                          var downloadUrls = <String>[];
+                          try {
+                            selectedUploadedFiles = selectedFiles
+                                .map((m) => FFUploadedFile(
+                                      name: m.storagePath.split('/').last,
+                                      bytes: m.bytes,
+                                    ))
+                                .toList();
+
+                            downloadUrls = (await Future.wait(
+                              selectedFiles.map(
+                                (f) async =>
+                                    await uploadData(f.storagePath, f.bytes),
+                              ),
+                            ))
+                                .where((u) => u != null)
+                                .map((u) => u!)
+                                .toList();
+                          } finally {
+                            _model.isDataUploading_uploadData9x3 = false;
+                          }
+                          if (selectedUploadedFiles.length ==
+                                  selectedFiles.length &&
+                              downloadUrls.length == selectedFiles.length) {
+                            safeSetState(() {
+                              _model.uploadedLocalFile_uploadData9x3 =
+                                  selectedUploadedFiles.first;
+                              _model.uploadedFileUrl_uploadData9x3 =
+                                  downloadUrls.first;
+                            });
+                          } else {
+                            safeSetState(() {});
+                            return;
+                          }
+                        }
+                      },
+                      text: FFLocalizations.of(context).getText(
+                        'n5zr1v76' /* 音声をアップロード */,
+                      ),
+                      options: FFButtonOptions(
+                        height: 40.0,
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                        iconPadding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        color: FlutterFlowTheme.of(context).primary,
+                        textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                              font: GoogleFonts.notoSansJp(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .fontStyle,
+                              ),
+                              color: Colors.white,
+                              letterSpacing: 0.0,
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .fontWeight,
+                              fontStyle:
+                                  FlutterFlowTheme.of(context).titleSmall.fontStyle,
+                            ),
+                        elevation: 0.0,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                  ],
                 ),
                 StreamBuilder<List<ChildrenRecord>>(
                   stream: queryChildrenRecord(

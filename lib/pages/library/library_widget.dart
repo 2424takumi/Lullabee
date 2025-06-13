@@ -49,19 +49,11 @@ class _LibraryWidgetState extends State<LibraryWidget> {
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            context.pushNamed(
-              PostWidget.routeName,
-              queryParameters: {
-                'postrecording': serializeParam(
-                  '',
-                  ParamType.String,
-                ),
-              }.withoutNulls,
-            );
+            context.pushNamed(RecordingWidget.routeName);
           },
           backgroundColor: FlutterFlowTheme.of(context).primary,
           child: Icon(
-            Icons.add_rounded,
+            Icons.mic_rounded,
             color: FlutterFlowTheme.of(context).primaryBackground,
             size: 24.0,
           ),

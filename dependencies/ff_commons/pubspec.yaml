@@ -17,11 +17,12 @@ dependencies:
     path: ../../
   collection: 1.19.1
   equatable: 2.0.5
-  http: 1.2.1
+  http: 1.2.0
   mime_type: 1.0.0
 
 dependency_overrides:
-  http: 1.2.1
+  http: 1.2.0
   web: 0.5.1
+  collection: 1.19.1
 
 flutter:

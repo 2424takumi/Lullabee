@@ -145,7 +145,7 @@ dependencies:
   cupertino_icons: ^1.0.0
 
 dependency_overrides:
-  http: 1.2.1
+  http: 1.2.0
   uuid: ^4.0.0
   win32: 5.5.1
   collection: 1.19.1
@@ -155,8 +155,8 @@ dependency_overrides:
 dev_dependencies:
   flutter_lints: 4.0.0
   lints: 4.0.0
-  flutter_test:
-    sdk: flutter
+  # flutter_test:
+  #   sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

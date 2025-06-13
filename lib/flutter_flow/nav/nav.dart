@@ -105,13 +105,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) {
     refreshListenable: appStateNotifier,
     navigatorKey: appNavigatorKey,
     errorBuilder: (context, state) =>
-        appStateNotifier.loggedIn ? NavBarPage() : RegisterAutWidget(),
+        appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
     routes: [
       FFRoute(
         name: '_initialize',
         path: '/',
         builder: (context, _) =>
-            appStateNotifier.loggedIn ? NavBarPage() : RegisterAutWidget(),
+            appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
       ),
       FFRoute(
         name: HomePageWidget.routeName,
@@ -212,6 +212,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) {
         name: RegisterMailWidget.routeName,
         path: RegisterMailWidget.routePath,
         builder: (context, params) => RegisterMailWidget(),
+      ),
+      FFRoute(
+        name: LoginWidget.routeName,
+        path: LoginWidget.routePath,
+        builder: (context, params) => LoginWidget(),
+      ),
+      FFRoute(
+        name: LoginMailWidget.routeName,
+        path: LoginMailWidget.routePath,
+        builder: (context, params) => LoginMailWidget(),
       ),
       FFRoute(
         name: $music_player_library_jwsrtr.HomePageWidget.routeName,
@@ -421,7 +431,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/registerAut';
+            return '/login';
           }
           return null;
         },

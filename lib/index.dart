@@ -22,3 +22,5 @@ export '/register/register_user_name/register_user_name_widget.dart'
     show RegisterUserNameWidget;
 export '/register/register_mail/register_mail_widget.dart'
     show RegisterMailWidget;
+export '/login/login_widget.dart' show LoginWidget;
+export '/login/login_mail/login_mail_widget.dart' show LoginMailWidget;

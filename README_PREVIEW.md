@@ -2,42 +2,32 @@
 
 ## 概要
 
-PR（プルリクエスト）を作成すると自動的にプレビュー環境がデプロイされ、実際の動作を確認できるシステムを構築します。
+PR（プルリクエスト）を作成すると自動的にFirebase Hostingのプレビューチャンネルにデプロイされ、実際の動作を確認できるシステムを構築しています。
 
-## セットアップ手順
+## 現在の設定（Firebase Hosting）
 
-### 1. Vercelアカウントの準備
+このプロジェクトでは、Firebase Hostingのプレビューチャンネル機能を使用してプレビュー環境を提供しています。
 
-1. [Vercel](https://vercel.com)でアカウントを作成
-2. GitHubアカウントと連携
+### 仕組み
 
-### 2. Vercelプロジェクトの作成
+1. PRが作成・更新されると、GitHub Actionsが自動的に起動
+2. Flutter Webアプリケーションをビルド
+3. Firebase Hostingのプレビューチャンネルにデプロイ
+4. PR内にプレビューURLがコメントされる
 
-1. Vercelダッシュボードで「New Project」をクリック
-2. GitHubリポジトリ「Lullabee」を選択
-3. Framework Presetは「Other」を選択
-4. Build Commandsは自動で`vercel.json`の設定が使用されます
+### 必要な設定
 
-### 3. 環境変数の取得
-
-Vercelダッシュボードから以下の値を取得：
-- Settings → General → Project ID を `VERCEL_PROJECT_ID`として保存
-- アカウント設定 → General → Your ID を `VERCEL_ORG_ID`として保存
-- アカウント設定 → Tokens → Create でトークンを作成し `VERCEL_TOKEN`として保存
-
-### 4. GitHub Secretsの設定
-
-GitHubリポジトリの Settings → Secrets and variables → Actions で以下を追加：
+GitHubリポジトリの Settings → Secrets and variables → Actions で以下が設定されている必要があります：
 
 ```
-VERCEL_TOKEN: [Vercelで作成したトークン]
-VERCEL_ORG_ID: [VercelのOrg/User ID]
-VERCEL_PROJECT_ID: [VercelのProject ID]
+FIREBASE_SERVICE_ACCOUNT: Firebase サービスアカウントのJSON
 ```
 
-### 5. Firebase設定の調整
+### Firebase設定
 
-Flutter WebでFirebaseを使用するため、`web/index.html`に以下を追加：
+プロジェクトID: `lullabee-mdb94s`
+
+Flutter WebでFirebaseを使用するため、`web/index.html`に以下のFirebase SDKが含まれています：
 
 ```html
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
@@ -58,10 +48,11 @@ git push origin feature/new-feature
 
 2. GitHubでPRを作成
 
-3. GitHub ActionsでビルドとVercelへのデプロイが自動実行
+3. GitHub ActionsでビルドとFirebase Hostingへのデプロイが自動実行
 
 4. PRのコメントにプレビューURLが表示される
-   - 例: `https://pr-123-lullabee.vercel.app`
+   - Firebase BotがプレビューURLをコメントします
+   - URLは自動生成され、7日間有効です
 
 ## プレビュー環境の利点
 
@@ -70,26 +61,30 @@ git push origin feature/new-feature
 - **バグの早期発見**: マージ前に問題を発見
 - **共有が簡単**: URLを共有するだけで誰でも確認可能
 
-## 代替案
+## ローカルでのプレビューチャンネルデプロイ
 
-### Firebase Hosting Preview Channels
-
-既存のFirebaseプロジェクトを活用する場合：
+開発者が手動でプレビューチャンネルにデプロイすることも可能です：
 
 ```bash
-# Firebase CLIをインストール
+# Firebase CLIをインストール（初回のみ）
 npm install -g firebase-tools
+
+# Firebaseにログイン（初回のみ）
+firebase login
 
 # プレビューチャンネルにデプロイ
 firebase hosting:channel:deploy preview-name --expires 7d
 ```
 
-### Netlify
+## GitHub Actions設定の詳細
 
-1. [Netlify](https://www.netlify.com)でアカウント作成
-2. GitHubリポジトリと連携
-3. Build command: `flutter build web --release`
-4. Publish directory: `build/web`
+プレビューデプロイは `.github/workflows/firebase-preview.yml` で管理されています：
+
+- **トリガー**: PR作成・更新時
+- **ビルド**: Flutter 3.16.0でWebビルド
+- **デプロイ先**: Firebase Hosting プレビューチャンネル
+- **有効期限**: 7日間
+- **プロジェクトID**: lullabee-mdb94s
 
 ## トラブルシューティング
 

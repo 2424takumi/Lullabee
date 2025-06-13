@@ -46,14 +46,12 @@ class _RecordingWidgetState extends State<RecordingWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           title: Text(
-            FFLocalizations.of(context).getText(
-              'fxpyzcq0' /* Page Title */,
-            ),
+            'Recorder',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   font: GoogleFonts.notoSansJp(
                     fontWeight:
@@ -61,7 +59,7 @@ class _RecordingWidgetState extends State<RecordingWidget> {
                     fontStyle:
                         FlutterFlowTheme.of(context).headlineMedium.fontStyle,
                   ),
-                  color: FlutterFlowTheme.of(context).primaryText,
+                  color: Colors.white,
                   fontSize: 22.0,
                   letterSpacing: 0.0,
                   fontWeight:
@@ -71,137 +69,124 @@ class _RecordingWidgetState extends State<RecordingWidget> {
                 ),
           ),
           actions: [],
-          centerTitle: false,
+          centerTitle: true,
           elevation: 0.0,
         ),
-        body: SafeArea(
-          top: true,
-          child: Align(
-            alignment: AlignmentDirectional(0.0, 0.0),
+        extendBodyBehindAppBar: true,
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFFF6B9D),
+                Color(0xFFFECA57),
+              ],
+              stops: [0.0, 1.0],
+              begin: AlignmentDirectional(0.0, -1.0),
+              end: AlignmentDirectional(0.0, 1.0),
+            ),
+          ),
+          child: SafeArea(
+            top: true,
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  FFLocalizations.of(context).getText(
-                    'c9une4w9' /* Hello World */,
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        font: GoogleFonts.notoSansJp(
-                          fontWeight: FlutterFlowTheme.of(context)
-                              .bodyMedium
-                              .fontWeight,
-                          fontStyle:
-                              FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                        ),
-                        letterSpacing: 0.0,
-                        fontWeight:
-                            FlutterFlowTheme.of(context).bodyMedium.fontWeight,
-                        fontStyle:
-                            FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                      ),
-                ),
-                FFButtonWidget(
-                  onPressed: () async {
-                    await requestPermission(microphonePermission);
-                    if (await getPermissionStatus(microphonePermission)) {
-                      await startAudioRecording(
-                        context,
-                        audioRecorder: _model.audioRecorder ??= AudioRecorder(),
-                      );
-
-                      FFAppState().isRecordingState = true;
-                      safeSetState(() {});
-                    }
-                  },
-                  text: FFLocalizations.of(context).getText(
-                    's499tcx3' /* start */,
-                  ),
-                  options: FFButtonOptions(
-                    width: 120.0,
-                    height: 120.0,
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                    iconPadding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: FlutterFlowTheme.of(context).primary,
-                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                          font: GoogleFonts.notoSansJp(
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .fontStyle,
+                Expanded(
+                  child: Center(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        if (FFAppState().isRecordingState)
+                          Container(
+                            width: 200.0,
+                            height: 200.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Color(0xFFFF4757).withOpacity(0.3),
+                                width: 2.0,
+                              ),
+                            ),
                           ),
-                          color: Colors.white,
-                          letterSpacing: 0.0,
-                          fontWeight: FlutterFlowTheme.of(context)
-                              .titleSmall
-                              .fontWeight,
-                          fontStyle:
-                              FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                        ),
-                    elevation: 0.0,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                FFButtonWidget(
-                  onPressed: () async {
-                    await stopAudioRecording(
-                      audioRecorder: _model.audioRecorder,
-                      audioName: 'recordedFileBytes',
-                      onRecordingComplete: (audioFilePath, audioBytes) {
-                        _model.myrecording = audioFilePath;
-                        _model.recordedFileBytes = audioBytes;
-                      },
-                    );
+                        InkWell(
+                          onTap: () async {
+                            if (!FFAppState().isRecordingState) {
+                              await requestPermission(microphonePermission);
+                              if (await getPermissionStatus(microphonePermission)) {
+                                await startAudioRecording(
+                                  context,
+                                  audioRecorder: _model.audioRecorder ??= AudioRecorder(),
+                                );
 
-                    FFAppState().isRecordingState = false;
-                    safeSetState(() {});
+                                FFAppState().isRecordingState = true;
+                                safeSetState(() {});
+                              }
+                            } else {
+                              await stopAudioRecording(
+                                audioRecorder: _model.audioRecorder,
+                                audioName: 'recordedFileBytes',
+                                onRecordingComplete: (audioFilePath, audioBytes) {
+                                  _model.myrecording = audioFilePath;
+                                  _model.recordedFileBytes = audioBytes;
+                                },
+                              );
 
-                    context.pushNamed(
-                      PostWidget.routeName,
-                      queryParameters: {
-                        'postrecording': serializeParam(
-                          _model.myrecording,
-                          ParamType.String,
-                        ),
-                      }.withoutNulls,
-                    );
+                              FFAppState().isRecordingState = false;
+                              safeSetState(() {});
 
-                    safeSetState(() {});
-                  },
-                  text: FFLocalizations.of(context).getText(
-                    'm6chre1j' /* stop */,
-                  ),
-                  options: FFButtonOptions(
-                    width: 120.0,
-                    height: 120.0,
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                    iconPadding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: FlutterFlowTheme.of(context).primary,
-                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                          font: GoogleFonts.notoSansJp(
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .fontStyle,
+                              context.pushNamed(
+                                PostWidget.routeName,
+                                queryParameters: {
+                                  'postrecording': serializeParam(
+                                    _model.myrecording,
+                                    ParamType.String,
+                                  ),
+                                }.withoutNulls,
+                              );
+                            }
+                          },
+                          borderRadius: BorderRadius.circular(100.0),
+                          child: Container(
+                            width: 180.0,
+                            height: 180.0,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: FFAppState().isRecordingState
+                                    ? Color(0xFFFF4757)
+                                    : Colors.white.withOpacity(0.3),
+                                width: 3.0,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20.0,
+                                  color: Color(0x33000000),
+                                  offset: Offset(
+                                    0.0,
+                                    10.0,
+                                  ),
+                                  spreadRadius: 0.0,
+                                )
+                              ],
+                            ),
+                            child: Center(
+                              child: Icon(
+                                FFAppState().isRecordingState
+                                    ? Icons.stop_rounded
+                                    : Icons.mic_rounded,
+                                color: FFAppState().isRecordingState
+                                    ? Color(0xFFFF4757)
+                                    : Color(0xFF9E9E9E),
+                                size: 64.0,
+                              ),
+                            ),
                           ),
-                          color: Colors.white,
-                          letterSpacing: 0.0,
-                          fontWeight: FlutterFlowTheme.of(context)
-                              .titleSmall
-                              .fontWeight,
-                          fontStyle:
-                              FlutterFlowTheme.of(context).titleSmall.fontStyle,
                         ),
-                    elevation: 0.0,
-                    borderRadius: BorderRadius.circular(8.0),
+                      ],
+                    ),
                   ),
                 ),
               ],
